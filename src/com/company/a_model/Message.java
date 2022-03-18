@@ -1,22 +1,39 @@
 package com.company.a_model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Message implements Serializable {
-    //  private static int count = 0;
-    //  private int message_id=0;
+
+    private final int message_id;
     private int sender_id;
     private int receiver_id;
     private String message;
     private long serialVersionUID=1L;
+
+    public Message(int message_id, int sender_id, int receiver_id, String message) {
+        this.message_id = message_id;
+        this.sender_id = sender_id;
+        this.receiver_id = receiver_id;
+        this.message = message;
+    }
 
     public Message(int sender_id, int receiver_id, String message) {
 
         this.sender_id = sender_id;
         this.receiver_id = receiver_id;
         this.message = message;
-        // this.message_id=this.count;
-        //  count++;
+        this.message_id= hashCode();
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSender_id(), getReceiver_id(), getMessage());
+    }
+
+    public int getMessage_id() {
+        return message_id;
     }
 
     public int getSender_id() {
@@ -46,10 +63,18 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "Message{" +
-                //"message_id" + message_id +
-                "sender_id=" + sender_id +
+        if(message.contains("_reply*")){
+            String s1 = message.substring(message.indexOf("*") + 1);
+            return "\tMessage{" +
+                    "message_id" + message_id +
+                    "sender_id=" + sender_id +
+                    ", message='" + s1.trim() + '\'' +
+                    '}';
+        }
+        return "\nMessage{" +
+                "message_id=" + message_id +
+                ", sender_id=" + sender_id +
                 ", message='" + message + '\'' +
-                '}';
+                "}";
     }
 }
